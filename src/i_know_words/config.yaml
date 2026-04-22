@@ -1,0 +1,40 @@
+timer:
+  enabled: true
+  interval: 10
+footer:
+  label: about I Know Words ©️
+  url: "https://github.com/smirnovkirilll/i_know_words"
+history_length: 10
+default: tr_en
+
+dictionaries:
+  tr_en:
+    label: TR → EN
+    path: src/i_know_words/dictionaries/tr_en.json
+  en_tr:
+    label: EN → TR
+    path: src/i_know_words/dictionaries/en_tr.json
+
+display:
+  en_tr:
+    show_translation_in_bar: true
+    ranking:
+      enabled: true
+      key: rank
+    menu_items:
+      word: english
+      translation: turkish
+      wiktionary: wiktionary
+      google translate: "google translate"
+      rank: rank
+  tr_en:
+    show_translation_in_bar: true
+    ranking:
+      enabled: true
+      key: rank
+    menu_items:
+      word: turkish
+      translation: english
+      wiktionary: wiktionary
+      google translate: "google translate"
+      rank: rank

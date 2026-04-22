@@ -1,0 +1,63 @@
+[build-system]
+requires = ["hatchling>=1.28.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "i_know_words"
+dynamic = ["version"]
+authors = [
+    { name="Kirill Smirnov", github="https://github.com/smirnovkirilll" },
+]
+description = "A minimalistic menubar app designed for people who obviously don't know all the words yet"
+readme = "README.md"
+requires-python = ">=3.13"
+classifiers = [
+    "Environment :: MacOS X",
+    "Environment :: MacOS X :: Cocoa",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: MacOS :: MacOS X",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Education",
+    "Topic :: Education :: Computer Aided Instruction (CAI)",
+    "Topic :: Utilities",
+]
+keywords = [
+    "vocabulary",
+    "language-learning",
+    "flashcards",
+    "spaced-repetition",
+    "menubar",
+    "macos",
+    "tray-app",
+    "productivity",
+    "learning",
+    "dictionary",
+]
+license = "Apache-2.0"
+license-files = ["LICEN[CS]E*"]
+
+dependencies = [
+    "rumps>=0.4",
+    "PyYAML>=6.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/smirnovkirilll/i_know_words"
+Source = "https://github.com/smirnovkirilll/i_know_words"
+Issues = "https://github.com/smirnovkirilll/i_know_words/issues"
+
+[project.scripts]
+i_know_words = "i_know_words.app"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/README.md",
+    "/LICENSE",
+    "/NOTICE",
+    "/pyproject.toml",
+]
+
+[tool.hatch.version]
+path = "src/i_know_words/__init__.py"
