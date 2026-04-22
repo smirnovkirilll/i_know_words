@@ -10,10 +10,10 @@ default: tr_en
 dictionaries:
   tr_en:
     label: TR → EN
-    path: src/i_know_words/dictionaries/tr_en.json
+    path: dictionaries/tr_en.json
   en_tr:
     label: EN → TR
-    path: src/i_know_words/dictionaries/en_tr.json
+    path: dictionaries/en_tr.json
 
 display:
   en_tr:

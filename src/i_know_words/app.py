@@ -3,16 +3,28 @@
 import argparse
 import json
 import math
+import os
 import random
 import rumps
 import subprocess
 import webbrowser
 import yaml
 from collections import deque
+from importlib import resources
+from pathlib import Path
 
 
+APP_NAME = "i_know_words"
+CONFIG_YAML = "config.yaml"
 DEFAULT_INTERVAL = 10
 DEFAULT_HISTORY_LENGTH = 10
+
+
+def get_default_config_path():
+    try:
+        return resources.files(APP_NAME).joinpath(CONFIG_YAML)
+    except:
+        return CONFIG_YAML
 
 
 class DictionaryModel:
@@ -27,7 +39,7 @@ class DictionaryModel:
         self.history = deque(maxlen=history_length)
 
     def load(self):
-        with open(self.path, "r") as f:
+        with open(self.path, "r", encoding="utf-8") as f:
             return json.load(f)
 
     def prepare_weights(self):
@@ -189,6 +201,7 @@ class WordApp(rumps.App):
         super().__init__("Word")
 
         self.config_path = config_path
+        self.config_dir = os.path.dirname(os.path.abspath(config_path))
         self.config = self.load_config(config_path)
         self.history_length = self.config.get("history_length", DEFAULT_HISTORY_LENGTH)
         self.interval = self.get_interval()
@@ -200,7 +213,8 @@ class WordApp(rumps.App):
             key = self.normalize_name(name)
             model_cfg = self.config["display"][key]
             path = cfg if isinstance(cfg, str) else cfg["path"]
-            self.models[name] = DictionaryModel(name, path, model_cfg, self.history_length)
+            resolved_path = Path(self.resolve_path(path))
+            self.models[name] = DictionaryModel(name, resolved_path, model_cfg, self.history_length)
 
         self.current_name = self.config["default"]
         self.current_model = self.models[self.current_name]
@@ -208,6 +222,22 @@ class WordApp(rumps.App):
         self.renderer = MenuRenderer(self)
         self.start_timer()
         self.update_word(None)
+
+    def resolve_path(self, path_str):
+        p = Path(path_str)
+        if p.is_absolute():
+            return p
+
+        candidate = Path(self.config_dir) / p
+        if candidate.exists():
+            return candidate
+
+        try:
+            return resources.files(APP_NAME).joinpath(path_str)
+        except:
+            pass
+
+        return p
 
     @staticmethod
     def normalize_name(name):
@@ -272,14 +302,18 @@ class WordApp(rumps.App):
         self.rebuild_menu()
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="A minimalistic menubar app designed for people who obviously don't know all the words yet (rumps + yaml)"
     )
     parser.add_argument(
         "--config_path",
-        default="src/i_know_words/config.yaml",
-        help="configuration file path",
+        help="Path to external config.yaml (optional)",
     )
     args = parser.parse_args()
-    WordApp(args.config_path).run()
+    config_path = args.config_path or get_default_config_path()
+    WordApp(config_path).run()
+
+
+if __name__ == "__main__":
+    main()

@@ -6,11 +6,11 @@ build-backend = "hatchling.build"
 name = "i_know_words"
 dynamic = ["version"]
 authors = [
-    { name="Kirill Smirnov", github="https://github.com/smirnovkirilll" },
+    { name="Kirill Smirnov" },
 ]
 description = "A minimalistic menubar app designed for people who obviously don't know all the words yet"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 classifiers = [
     "Environment :: MacOS X",
     "Environment :: MacOS X :: Cocoa",
@@ -48,7 +48,17 @@ Source = "https://github.com/smirnovkirilll/i_know_words"
 Issues = "https://github.com/smirnovkirilll/i_know_words/issues"
 
 [project.scripts]
-i_know_words = "i_know_words.app"
+i-know-words = "i_know_words.app:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/i_know_words"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src" = ""
+
+[tool.hatch.build.targets.wheel.include]
+"src/i_know_words/config.yaml" = "i_know_words/config.yaml"
+"src/i_know_words/dictionaries/*.json" = "i_know_words/dictionaries/"
 
 [tool.hatch.build.targets.sdist]
 include = [
