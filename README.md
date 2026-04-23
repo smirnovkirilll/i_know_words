@@ -129,13 +129,10 @@ This is not.
 ## Installation
 
 ```bash
-pip install -r requirements.txt
-```
-
-Run:
-
-```bash
-python3 app.py
+pip install i-know-words
+i-know-words
+i-know-words --help
+i-know-words --config_path=config.yaml
 ```
 
 ---
